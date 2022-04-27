@@ -1,4 +1,6 @@
-use aoc_2015::{d01, d02, d03};
+mod d01;
+mod d02;
+mod d03;
 
 fn main() {
     d01::d01_solutions();
