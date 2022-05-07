@@ -1,6 +1,6 @@
 use std::fs;
 
-pub fn d02_solutions() {
+pub fn solutions() {
     let all_boxes = parse_input("input/d02.txt");
     let total_wrapping_paper = part_1(&all_boxes);
     let total_ribbon = part_2(&all_boxes);

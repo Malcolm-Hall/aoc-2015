@@ -1,6 +1,6 @@
 use std::fs;
 
-pub fn d01_solutions() {
+pub fn solutions() {
     let input = fs::read_to_string("input/d01.txt").unwrap();
     let floor = part_1(&input);
     let position = part_2(&input);

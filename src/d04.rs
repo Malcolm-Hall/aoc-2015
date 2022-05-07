@@ -1,7 +1,7 @@
 use std::fs;
 use md5;
 
-pub fn d04_solutions() {
+pub fn solutions() {
     let input = fs::read_to_string("input/d04.txt").unwrap();
     let result_1 = part_1(&input);
     let result_2 = part_2(&input);

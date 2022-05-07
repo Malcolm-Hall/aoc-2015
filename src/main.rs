@@ -2,10 +2,12 @@ mod d01;
 mod d02;
 mod d03;
 mod d04;
+mod d05;
 
 fn main() {
-    d01::d01_solutions();
-    d02::d02_solutions();
-    d03::d03_solutions();
-    d04::d04_solutions();
+    d01::solutions();
+    d02::solutions();
+    d03::solutions();
+    d04::solutions();
+    d05::solutions();
 }
