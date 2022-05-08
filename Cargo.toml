@@ -7,3 +7,6 @@ edition = "2021"
 
 [dependencies]
 md5 = "0.7.0"
+
+[profile.release]
+debug = true
