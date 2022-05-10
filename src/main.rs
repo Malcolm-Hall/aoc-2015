@@ -8,10 +8,10 @@ mod d05;
 mod d06;
 
 fn main() {
-    d01::solutions();
-    d02::solutions();
-    d03::solutions();
-    d04::solutions();
-    d05::solutions();
+    // d01::solutions();
+    // d02::solutions();
+    // d03::solutions();
+    // d04::solutions();
+    // d05::solutions();
     d06::solutions();
 }
