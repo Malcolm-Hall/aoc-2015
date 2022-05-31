@@ -7,6 +7,7 @@ mod d04;
 mod d05;
 mod d06;
 mod d07;
+mod d08;
 
 fn main() {
     // d01::solutions();
@@ -15,5 +16,6 @@ fn main() {
     // d04::solutions();
     // d05::solutions();
     // d06::solutions();
-    d07::solutions();
+    // d07::solutions();
+    d08::solutions();
 }
