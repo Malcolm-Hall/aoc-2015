@@ -15,18 +15,17 @@ pub fn solutions() {
 }
 
 fn process(input: &str) -> String {
-    let (_, output) = input.chars().chain(['0']).fold(
-        (None, "".to_owned()),
-        |(acc, mut output): (Option<(char, usize)>, String), next| match acc {
-            None => (Some((next, 1)), output),
-            Some((prev, count)) => {
-                if next == prev {
-                    (Some((next, count + 1)), output)
-                } else {
-                    count.to_string().chars().for_each(|c| output.push(c));
-                    output.push(prev);
-                    (Some((next, 1)), output)
-                }
+    let mut chars = input.chars().chain(['0']);
+    let first = chars.next().unwrap();
+    let (_, _, output) = chars.fold(
+        (first, 1, "".to_owned()),
+        |(prev, count, mut output), next| {
+            if next == prev {
+                (next, count + 1, output)
+            } else {
+                count.to_string().chars().for_each(|c| output.push(c));
+                output.push(prev);
+                (next, 1, output)
             }
         },
     );
