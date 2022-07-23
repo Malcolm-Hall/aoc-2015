@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fs};
 
-pub fn solutions() {
+fn main() {
     let input = fs::read_to_string("input/d05.txt").unwrap();
     let lines = input.lines().collect::<Vec<_>>();
     let total_nice_strings_p1 = part_1(&lines);

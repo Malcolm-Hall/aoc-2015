@@ -1,6 +1,6 @@
 use std::{collections::HashSet, fs};
 
-pub fn solutions() {
+fn main() {
     let input = fs::read_to_string("input/d11.txt").unwrap();
     let first_new_password = get_next_password(&input);
     let second_new_password = get_next_password(&first_new_password);
@@ -10,7 +10,7 @@ pub fn solutions() {
 
 fn get_next_password(input: &str) -> String {
     let mut new_password = increment_password(input);
-    while !meets_requirements(&new_password)  {
+    while !meets_requirements(&new_password) {
         new_password = increment_password(&new_password);
     }
     new_password
@@ -39,8 +39,10 @@ fn increment_password(input: &str) -> String {
     output.chars().rev().collect()
 }
 
-fn meets_requirements(input:&str) -> bool {
-    has_increasing_straight(input) && !has_forbidden_letters(input) && has_two_different_pairs(input)
+fn meets_requirements(input: &str) -> bool {
+    has_increasing_straight(input)
+        && !has_forbidden_letters(input)
+        && has_two_different_pairs(input)
 }
 
 fn has_increasing_straight(input: &str) -> bool {
@@ -92,19 +94,19 @@ mod test {
     fn get_next_password_examples() {
         let examples = vec!["abcdefgh".to_owned(), "ghijklmn".to_owned()];
         let results = examples
-        .into_iter()
-        .map(|example| get_next_password(&example))
-        .collect::<Vec<_>>();
+            .into_iter()
+            .map(|example| get_next_password(&example))
+            .collect::<Vec<_>>();
         assert_eq!(results, vec!["abcdffaa".to_owned(), "ghjaabcc".to_owned()])
     }
-    
+
     #[test]
     fn increment_letter_examples() {
         let examples = vec!['a', 'z', 'u', 'r', 'e'];
         let results = examples
-        .into_iter()
-        .map(|example| increment_letter(example))
-        .collect::<Vec<_>>();
+            .into_iter()
+            .map(|example| increment_letter(example))
+            .collect::<Vec<_>>();
         assert_eq!(results, vec!['b', 'a', 'v', 's', 'f'])
     }
 

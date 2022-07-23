@@ -1,6 +1,6 @@
 use std::fs;
 
-pub fn solutions() {
+fn main() {
     let input = fs::read_to_string("input/d10.txt").unwrap();
     let mut part_1_result = input;
     for _ in 0..40 {

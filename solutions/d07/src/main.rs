@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::str::FromStr;
 
-pub fn solutions() {
+fn main() {
     let input_file = File::open("input/d07.txt").unwrap();
     let gates = parse_gates(input_file);
 
@@ -24,9 +24,12 @@ pub fn solutions() {
         })
         .collect::<HashMap<_, Option<u16>>>();
     let a_output_2 = gates.get("a").unwrap().get_output(&gates, &mut outputs_2);
-    
+
     println!("The signal provided to wire 'a' is {}", a_output_1);
-    println!("Setting the signal of wire 'b' to {} results in a signal to wire 'a' of {}", a_output_1, a_output_2);
+    println!(
+        "Setting the signal of wire 'b' to {} results in a signal to wire 'a' of {}",
+        a_output_1, a_output_2
+    );
 }
 
 fn parse_gates(input_file: File) -> HashMap<String, Gate> {
@@ -158,21 +161,27 @@ mod test {
             .keys()
             .map(|key| (key.to_owned(), None))
             .collect::<HashMap<_, Option<u16>>>();
-        
-        let results = example_gates.iter().map(|(output, gate)| {
-            let gate_output = gate.get_output(&example_gates, &mut outputs);
-            (output.to_owned(), Some(gate_output))
-        }).collect::<HashMap<_,_>>();
 
-        assert_eq!(results, HashMap::from([
-            ("d".to_owned(), Some(72)),
-            ("e".to_owned(), Some(507)),
-            ("f".to_owned(), Some(492)),
-            ("g".to_owned(), Some(114)),
-            ("h".to_owned(), Some(65412)),
-            ("i".to_owned(), Some(65079)),
-            ("x".to_owned(), Some(123)),
-            ("y".to_owned(), Some(456)),
-        ]))
+        let results = example_gates
+            .iter()
+            .map(|(output, gate)| {
+                let gate_output = gate.get_output(&example_gates, &mut outputs);
+                (output.to_owned(), Some(gate_output))
+            })
+            .collect::<HashMap<_, _>>();
+
+        assert_eq!(
+            results,
+            HashMap::from([
+                ("d".to_owned(), Some(72)),
+                ("e".to_owned(), Some(507)),
+                ("f".to_owned(), Some(492)),
+                ("g".to_owned(), Some(114)),
+                ("h".to_owned(), Some(65412)),
+                ("i".to_owned(), Some(65079)),
+                ("x".to_owned(), Some(123)),
+                ("y".to_owned(), Some(456)),
+            ])
+        )
     }
 }

@@ -1,6 +1,6 @@
 use std::fs;
 
-pub fn solutions() {
+fn main() {
     let input = fs::read_to_string("input/d15.txt").unwrap();
     let recipie = Recipie::from_str(&input);
     let best_score_part_1 = find_best_score_part_1(&recipie);

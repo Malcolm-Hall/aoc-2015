@@ -2,7 +2,7 @@ use std::fs;
 
 use json::JsonValue;
 
-pub fn solutions() {
+fn main() {
     println!("hello d12!");
     let input = fs::read_to_string("input/d12.txt").unwrap();
     let part_1 = sum_all_numbers(&input);

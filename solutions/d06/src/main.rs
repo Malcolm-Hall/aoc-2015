@@ -3,7 +3,7 @@ use std::{
     io::{self, BufRead},
 };
 
-pub fn solutions() {
+fn main() {
     let instructions = parse_input();
     let total_lit = part_1(1000, &instructions);
     let total_brightness = part_2(1000, &instructions);

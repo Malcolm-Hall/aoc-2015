@@ -1,6 +1,6 @@
 use std::{cmp::min, fs, num::ParseIntError};
 
-pub fn solutions() {
+fn main() {
     let input = fs::read_to_string("input/d14.txt").unwrap();
     let end_time = 2503;
     let contestants = input

@@ -1,7 +1,7 @@
 use md5;
 use std::fs;
 
-pub fn solutions() {
+fn main() {
     let secret_key = fs::read_to_string("input/d04.txt").unwrap();
     let miner = Miner::new(secret_key);
     let result_1 = part_1(&miner);

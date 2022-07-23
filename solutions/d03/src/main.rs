@@ -1,6 +1,6 @@
 use std::{collections::HashSet, fs};
 
-pub fn solutions() {
+fn main() {
     let input = fs::read_to_string("input/d03.txt").unwrap();
     let houses_visited_part_1 = part_1(&input).unwrap();
     let houses_visited_part_2 = part_2(&input).unwrap();

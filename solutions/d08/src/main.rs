@@ -1,11 +1,14 @@
 use std::fs;
 
-pub fn solutions() {
+fn main() {
     let input = fs::read_to_string("input/d08.txt").unwrap();
     let lines = input.lines().map(|line| line.to_owned()).collect();
     let part_1 = part_1(&lines);
     let part_2 = part_2(&lines);
-    println!("The difference between total number of characters of code and characters in memory is {}", part_1);
+    println!(
+        "The difference between total number of characters of code and characters in memory is {}",
+        part_1
+    );
     println!("The difference between total number of characters in the new encoding and characters of code is {}", part_2)
 }
 
@@ -33,40 +36,39 @@ fn count_memory(input: &str) -> usize {
     let mut chars = input.chars();
     chars.next();
     chars.next_back();
-    let (result, _) = chars.fold(
-        (0, String::with_capacity(3)),
-        |(acc, mut buffer), next| {
-            match buffer.len() {
+    let (result, _) =
+        chars.fold(
+            (0, String::with_capacity(3)),
+            |(acc, mut buffer), next| match buffer.len() {
                 0 => match next {
                     '\\' => {
                         buffer.push(next);
                         (acc, buffer)
-                    },
+                    }
                     _ => (acc + 1, buffer),
                 },
                 1 => match next {
                     'x' => {
                         buffer.push(next);
                         (acc, buffer)
-                    },
+                    }
                     '"' | '\\' => {
                         buffer.clear();
                         (acc + 1, buffer)
-                    },
-                    _ => panic!("Unexpected escaped character {}{}", buffer, next)
+                    }
+                    _ => panic!("Unexpected escaped character {}{}", buffer, next),
                 },
                 2 => {
                     buffer.push(next);
                     (acc, buffer)
-                },
+                }
                 3 => {
                     buffer.clear();
                     (acc + 1, buffer)
-                },
+                }
                 _ => panic!("Unexpected buffer {}", buffer),
-            }
-        },
-    );
+            },
+        );
     result
 }
 
