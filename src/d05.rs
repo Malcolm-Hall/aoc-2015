@@ -1,100 +1,102 @@
-use std::fs;
+use std::{collections::HashMap, fs};
 
 pub fn solutions() {
     let input = fs::read_to_string("input/d05.txt").unwrap();
-    let lines = input.lines().map(|line| line.to_owned()).collect();
+    let lines = input.lines().collect::<Vec<_>>();
     let total_nice_strings_p1 = part_1(&lines);
     let total_nice_strings_p2 = part_2(&lines);
     println!("There are {total_nice_strings_p1} nice strings using part 1 rules");
     println!("There are {total_nice_strings_p2} nice strings using part 2 rules");
 }
 
-fn part_1(lines: &Vec<String>) -> usize {
-    lines.iter().fold(0, |acc, line| {
-        if !has_at_least_3_vowels(line)
-            || !has_repeated_letter(line, 0)
-            || has_forbidden_substrings(line)
+fn part_1(lines: &[&str]) -> u32 {
+    let mut total = 0;
+    for line in lines {
+        let chars = chars(line);
+        if has_at_least_3_vowels(&chars)
+            && has_repeated_letter(&chars, 0)
+            && !has_forbidden_substrings(&chars)
         {
-            return acc;
+            total += 1;
         }
-        acc + 1
-    })
+    }
+    total
 }
 
-fn part_2(lines: &Vec<String>) -> usize {
-    lines.iter().fold(0, |acc, line| {
-        if !has_repeated_pair_of_letters(line) || !has_repeated_letter(line, 1) {
-            return acc;
+fn part_2(lines: &[&str]) -> u32 {
+    let mut total = 0;
+    for line in lines {
+        let chars = chars(line);
+        if has_repeated_pair_of_letters(&chars) && has_repeated_letter(&chars, 1) {
+            total += 1;
         }
-        acc + 1
-    })
+    }
+    total
 }
 
-fn has_at_least_3_vowels(string: &str) -> bool {
-    let total_vowels = string.chars().fold(0, |acc, c| match c {
-        'a' | 'e' | 'i' | 'o' | 'u' => acc + 1,
-        _ => acc,
-    });
+fn chars(input: &str) -> Vec<char> {
+    input.chars().collect()
+}
+
+fn has_at_least_3_vowels(chars: &[char]) -> bool {
+    let mut total_vowels = 0;
+    for c in chars {
+        match c {
+            'a' | 'e' | 'i' | 'o' | 'u' => total_vowels += 1,
+            _ => (),
+        }
+    }
     total_vowels >= 3
 }
 
-fn has_repeated_letter(string: &str, separation: usize) -> bool {
+fn has_repeated_letter(chars: &[char], separation: usize) -> bool {
     let window_size = separation + 2;
-    string
-        .chars()
-        .collect::<Vec<_>>()
+    chars
         .windows(window_size)
         .any(|window| window[0] == window[window_size - 1])
 }
 
-fn has_forbidden_substrings(string: &str) -> bool {
-    string
-        .chars()
-        .collect::<Vec<_>>()
-        .windows(2)
-        .any(|window| match window {
-            ['a', 'b'] | ['c', 'd'] | ['p', 'q'] | ['x', 'y'] => true,
-            _ => false,
-        })
+fn has_forbidden_substrings(chars: &[char]) -> bool {
+    chars.windows(2).any(|window| match window {
+        ['a', 'b'] | ['c', 'd'] | ['p', 'q'] | ['x', 'y'] => true,
+        _ => false,
+    })
 }
 
-fn has_repeated_pair_of_letters(string: &str) -> bool {
-    let pairs = string
-        .chars()
-        .collect::<Vec<_>>()
-        .windows(2)
-        .map(|window| format!("{}{}", window[0], window[1]))
-        .collect::<Vec<_>>();
-
-    pairs.iter().enumerate().any(|(i, pair)| {
-        let rest = i + 2;
-        if rest > pairs.len() {
-            return false;
+fn has_repeated_pair_of_letters(chars: &[char]) -> bool {
+    let mut found_pairs: HashMap<&[char], usize> = HashMap::new();
+    for (idx, window) in chars.windows(2).enumerate() {
+        if let Some(prev_idx) = found_pairs.get(window) {
+            if idx != prev_idx + 1 {
+                return true;
+            }
+        } else {
+            found_pairs.insert(window, idx);
         }
-        pairs[rest..].contains(pair)
-    })
+    }
+    false
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
 
-    fn examples_p1() -> Vec<String> {
+    fn examples_p1() -> Vec<&'static str> {
         vec![
-            "ugknbfddgicrmopn".to_owned(),
-            "aaa".to_owned(),
-            "jchzalrnumimnmhp".to_owned(),
-            "haegwjzuvuyypxyu".to_owned(),
-            "dvszwmarrgswjxmb".to_owned(),
+            "ugknbfddgicrmopn",
+            "aaa",
+            "jchzalrnumimnmhp",
+            "haegwjzuvuyypxyu",
+            "dvszwmarrgswjxmb",
         ]
     }
 
-    fn examples_p2() -> Vec<String> {
+    fn examples_p2() -> Vec<&'static str> {
         vec![
-            "qjhvhtzxzqqjkmpb".to_owned(),
-            "xxyxx".to_owned(),
-            "uurcxstgmygtbstg".to_owned(),
-            "ieodomkazucvgmuy".to_owned(),
+            "qjhvhtzxzqqjkmpb",
+            "xxyxx",
+            "uurcxstgmygtbstg",
+            "ieodomkazucvgmuy",
         ]
     }
 
@@ -117,7 +119,8 @@ mod test {
         let examples = examples_p1();
         let results = examples
             .iter()
-            .map(|example| has_at_least_3_vowels(example))
+            .map(|example| chars(&example))
+            .map(|chars| has_at_least_3_vowels(&chars))
             .collect::<Vec<_>>();
         assert_eq!(results, vec![true, true, true, true, false])
     }
@@ -127,7 +130,8 @@ mod test {
         let examples = examples_p1();
         let results = examples
             .iter()
-            .map(|example| has_repeated_letter(example, 0))
+            .map(|example| chars(&example))
+            .map(|chars| has_repeated_letter(&chars, 0))
             .collect::<Vec<_>>();
         assert_eq!(results, vec![true, true, false, true, true])
     }
@@ -137,7 +141,8 @@ mod test {
         let examples = examples_p2();
         let results = examples
             .iter()
-            .map(|example| has_repeated_letter(example, 1))
+            .map(|example| chars(&example))
+            .map(|chars| has_repeated_letter(&chars, 1))
             .collect::<Vec<_>>();
         assert_eq!(results, vec![true, true, false, true])
     }
@@ -147,7 +152,8 @@ mod test {
         let examples = examples_p1();
         let results = examples
             .iter()
-            .map(|example| has_forbidden_substrings(example))
+            .map(|example| chars(&example))
+            .map(|chars| has_forbidden_substrings(&chars))
             .collect::<Vec<_>>();
         assert_eq!(results, vec![false, false, false, true, false])
     }
@@ -157,7 +163,8 @@ mod test {
         let examples = examples_p2();
         let results = examples
             .iter()
-            .map(|example| has_repeated_pair_of_letters(example))
+            .map(|example| chars(&example))
+            .map(|chars| has_repeated_pair_of_letters(&chars))
             .collect::<Vec<_>>();
         assert_eq!(results, vec![true, true, true, false])
     }
